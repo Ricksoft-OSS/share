@@ -52,10 +52,14 @@ function deleteEnv {
   kubectl delete namespace $NAMESPACE
 }
 
-if [[ $KEEP_ENV = false && "$TRAVIS_BRANCH" != "master" ]]; then
+if [[ $KEEP_ENV = false && "$TRAVIS_BRANCH" != "master" ]]
+ then
   deleteEnv
 else
-  if [[ $DELETE_MASTER = true ]]; then deleteEnv fi;
-  echo "Keeping environment $HOST";
+  if [[ $DELETE_MASTER = true ]]
+   then
+     deleteEnv
+  fi
+  echo "Keeping environment $HOST"
   echo "Please delete it manually when you will no longer need it!"
 fi;
