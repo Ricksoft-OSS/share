@@ -8,7 +8,7 @@ echo "Project version: ${PROJECT_VERSION}"
 echo "Travis commit message: ${TRAVIS_COMMIT_MESSAGE}"
 echo "Release version: ${RELEASE_VERSION}"
 
-if [ "${TRAVIS_BRANCH}" = "develop" ]; then
+if [ "${TRAVIS_BRANCH}" = "master" ]; then
   if [ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]; then
     TAG_NAME="latest"
   else

@@ -1,5 +1,5 @@
-if [[ "$TRAVIS_BRANCH" = "develop" ]]; then
-  NAMESPACE="develop-share"
+if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+  NAMESPACE="master-share"
 else
   NAMESPACE="travis-share-$TRAVIS_BUILD_NUMBER"
 fi
@@ -52,7 +52,7 @@ function deleteEnv {
   kubectl delete namespace $NAMESPACE
 }
 
-if [[ $KEEP_ENV = false && "$TRAVIS_BRANCH" != "develop" ]]; then
+if [[ $KEEP_ENV = false && "$TRAVIS_BRANCH" != "master" ]]; then
   deleteEnv
 else
   echo "Keeping environment $HOST";

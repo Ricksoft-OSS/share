@@ -1,5 +1,5 @@
-if [[ "$TRAVIS_BRANCH" = "develop" ]]; then
-  NAMESPACE="develop-share"
+if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+  NAMESPACE="master-share"
 else
   NAMESPACE="travis-share-$TRAVIS_BUILD_NUMBER"
 fi
@@ -13,10 +13,10 @@ export ALFRESCO_REPO_IMAGE="alfresco-content-repository"
 export ALFRESCO_SHARE_IMAGE="alfresco-share"
 
 #
-# Determine if the current branch is develop or not
+# Determine if the current branch is master or not
 #
-function isBranchDevelop() {
-  if [ "${TRAVIS_BRANCH}" = "develop" ]; then
+function isBranchMaster() {
+  if [ "${TRAVIS_BRANCH}" = "master" ]; then
     return 0
   else
     return 1
@@ -26,8 +26,8 @@ function isBranchDevelop() {
 #
 # Determine if the develop environment is up and running
 #
-function isDevelopUp() {
-  status_code=$(curl --write-out %{http_code} --silent --output /dev/null $DEVELOP_URL)
+function isMasterUp() {
+  status_code=$(curl --write-out %{http_code} --silent --output /dev/null $MASTER_URL)
   if [ "$status_code" -eq 200 ] ; then
     return 0
   else
@@ -35,8 +35,8 @@ function isDevelopUp() {
   fi
 }
 
-function updateDevelopEnv()  {
-  echo "Update develop"
+function updateMasterEnv()  {
+  echo "Update master"
 
   # add the helm repos
   helm repo add alfresco-incubator https://kubernetes-charts.alfresco.com/incubator
@@ -215,13 +215,13 @@ function wait_for_pods {
 }
 
 # Main
-if $(isBranchDevelop); then
-  echo "On branch develop"
+if $(isBranchMaster); then
+  echo "On branch master"
   SHARE_TAG_NAME=$TAG_NAME
   if [ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]; then
-    if $(isDevelopUp); then
+    if $(isMasterUp); then
       echo "Update develop environment"
-      updateDevelopEnv
+      updateMasterEnv
       wait_for_pods $NAMESPACE
     else
       echo "Create develop environment"
