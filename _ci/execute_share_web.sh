@@ -9,8 +9,8 @@ git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Alfresco/alfresco-t
 cd alfresco-tas-share-test
 git checkout master
 
-if [[ "$TRAVIS_BRANCH" = "develop" ]]; then
-  NAMESPACE="develop-share"
+if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+  NAMESPACE="master-share"
 else
   NAMESPACE="travis-share-$TRAVIS_BUILD_NUMBER"
 fi
