@@ -59,7 +59,8 @@ else
   if [[ $DELETE_MASTER = true ]]
    then
      deleteEnv
+  else
+    echo "Keeping environment $HOST"
+    echo "Please delete it manually when you will no longer need it!"
   fi
-  echo "Keeping environment $HOST"
-  echo "Please delete it manually when you will no longer need it!"
 fi;
