@@ -20,7 +20,6 @@ export HOST="${NAMESPACE}.${HOSTED_ZONE}"
 export XML_SUITE=$1
 mvn install \
                -DsuiteXmlFile="src/test/resources/test-suites/${XML_SUITE}" \
-               -DexcludeGroups='google-docs,unit,SmartFolders,ExternalUsers,tobefixed,office,TransformationServer,xsstests' \
                -Dalfresco.scheme=https \
                -Dalfresco.server=$HOST \
                -Dalfresco.port=443 \
@@ -30,7 +29,8 @@ mvn install \
                -Dadmin.user=admin \
                -Dadmin.password=$ADMIN_PWD \
                -Dbrowser.name=chrome \
-               -Daims.enabled=false & # send the long living command to background!
+               -Daims.enabled=false \
+               -Dsuite-name=${XML_SUITE}& # send the long living command to background!
 
 #minutes=0
 #limit=30
