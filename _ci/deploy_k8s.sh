@@ -220,11 +220,11 @@ if $(isBranchMaster); then
   SHARE_TAG_NAME=$TAG_NAME
   if [ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]; then
     if $(isMasterUp); then
-      echo "Update develop environment"
+      echo "Update master environment"
       updateMasterEnv
       wait_for_pods $NAMESPACE
     else
-      echo "Create develop environment"
+      echo "Create master environment"
       createEnv
       wait_for_pods $NAMESPACE
     fi

@@ -66,7 +66,7 @@ jobs:
   include:
     - name: "Build and Test"
       stage: build
-      if: commit_message !~ /\[trigger company release|release\]/ 
+      if: commit_message !~ /\[trigger company release|release|STOP MASTER\]/
       before_install: bash _ci/init.sh
       script: bash _ci/build.sh
 
@@ -88,7 +88,7 @@ jobs:
 
     - name: "Deploy on K8s"
       stage: deploy
-      if: commit_message !~ /\[trigger company release|skip tests\]/
+      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
       install: skip
       script: bash _ci/deploy_k8s.sh
 
@@ -96,7 +96,7 @@ jobs:
       name: "User and Authentication Tests"
       stage: tests
       jdk: openjdk11
-      if: fork=false AND commit_message !~ /\[trigger company release|skip tests\]/
+      if: fork=false AND commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
       before_install: bash _ci/init.sh
       install: skip
       script:
@@ -123,15 +123,21 @@ jobs:
 
     - name: "Delete environment"
       stage: tearDown
-      if: commit_message !~ /\[trigger company release|skip tests\]/
+      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
       install: skip
-      script: bash _ci/delete-env.sh
+      script: bash _ci/delete-env.sh false
 
-    - name: "Release"
-      stage: release
-      if: fork=false AND branch =~ /(master|develop|release\/.+)$/
-      before_install: bash _ci/init_tag.sh
-      script: travis_wait 30 _ci/maven_release.sh
+    - name: "Delete environment MASTER"
+      stage: tearDown
+      if: commit_message =~ /\[STOP MASTER\]/
+      install: skip
+      script: bash _ci/delete-env.sh true
+
+#    - name: "Release"
+#      stage: release
+#      if: fork=false AND branch =~ /(master|develop|release\/.+)$/
+#      before_install: bash _ci/init_tag.sh
+#      script: travis_wait 30 _ci/maven_release.sh
 
 #    - name: "Company Release"
 #      stage: company_release

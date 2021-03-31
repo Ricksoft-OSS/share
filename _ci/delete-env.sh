@@ -55,6 +55,7 @@ function deleteEnv {
 if [[ $KEEP_ENV = false && "$TRAVIS_BRANCH" != "master" ]]; then
   deleteEnv
 else
+  if [[ $1 = true ]]; then deleteEnv fi;
   echo "Keeping environment $HOST";
   echo "Please delete it manually when you will no longer need it!"
 fi;
