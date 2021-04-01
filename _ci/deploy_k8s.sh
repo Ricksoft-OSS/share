@@ -48,7 +48,7 @@ function updateMasterEnv()  {
   helm repo update
 
   # repository.replicaCount=1 - this is a temporary fix until issues on clusterd environments are fixed.
-  helm upgrade --install $RELEASE_NAME alfresco-incubator/alfresco-content-services --version 5.0.0-M1 \
+  helm upgrade --install $RELEASE_NAME alfresco-incubator/alfresco-content-services --version 5.0.1 \
 	  --set repository.replicaCount=1 \
           --set externalPort="443" \
           --set externalProtocol="https" \
@@ -59,7 +59,7 @@ function updateMasterEnv()  {
           --set persistence.storageClass.name="nfs-sc" \
           --set activemq.persistence.mountPath="/opt/activemq/data/${NAMESPACE}" \
           --set global.alfrescoRegistryPullSecrets=quay-registry-secret \
-          --set repository.adminPassword="${ADMIN_PWD}" \
+#          --set repository.adminPassword="${ADMIN_PWD}" \
           --set repository.image.repository="quay.io/alfresco/${ALFRESCO_REPO_IMAGE}" \
           --set repository.image.tag="${REPO_TAG_NAME}" \
           --set alfresco-sync-service.syncservice.image.tag="${SYNC_TAG_NAME}" \
@@ -137,7 +137,7 @@ function createEnv {
 
   # install ACS chart
   # repository.replicaCount=1 - this is a temporary fix until issues on clusterd environments are fixed.
-  helm upgrade --install $RELEASE_NAME alfresco-incubator/alfresco-content-services --version 5.0.0-M1 \
+  helm upgrade --install $RELEASE_NAME alfresco-incubator/alfresco-content-services --version 5.0.1 \
           --set repository.replicaCount=1 \
           --set externalPort="443" \
           --set externalProtocol="https" \
@@ -148,7 +148,7 @@ function createEnv {
           --set persistence.storageClass.name="nfs-sc" \
           --set activemq.persistence.mountPath="/opt/activemq/data/${NAMESPACE}" \
           --set global.alfrescoRegistryPullSecrets=quay-registry-secret \
-          --set repository.adminPassword="${ADMIN_PWD}" \
+#          --set repository.adminPassword="${ADMIN_PWD}" \
           --set repository.image.repository="quay.io/alfresco/${ALFRESCO_REPO_IMAGE}" \
           --set repository.image.tag="${REPO_TAG_NAME}" \
           --set share.image.repository="quay.io/alfresco/${ALFRESCO_SHARE_IMAGE}" \
