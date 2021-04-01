@@ -160,13 +160,13 @@ jobs:
 
     - name: "Delete environment"
       stage: tearDown
-      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
+      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/ AND branch != master
       install: skip
       script: bash _ci/delete-env.sh "false"
 
     - name: "Delete environment MASTER"
       stage: tearDown
-      if: commit_message =~ /\[STOP MASTER\]/
+      if: branch = master
       install: skip
       script: bash _ci/delete-env.sh "true"
 
