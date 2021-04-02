@@ -59,6 +59,7 @@ function updateMasterEnv()  {
           --set persistence.storageClass.name="nfs-sc" \
           --set activemq.persistence.mountPath="/opt/activemq/data/${NAMESPACE}" \
           --set global.alfrescoRegistryPullSecrets=quay-registry-secret \
+          --set repository.adminPassword="${ADMIN_PWD}" \
           --set repository.image.repository="quay.io/alfresco/${ALFRESCO_REPO_IMAGE}" \
           --set repository.image.tag="${REPO_TAG_NAME}" \
           --set alfresco-sync-service.syncservice.image.tag="${SYNC_TAG_NAME}" \
@@ -147,6 +148,7 @@ function createEnv {
           --set persistence.storageClass.name="nfs-sc" \
           --set activemq.persistence.mountPath="/opt/activemq/data/${NAMESPACE}" \
           --set global.alfrescoRegistryPullSecrets=quay-registry-secret \
+          --set repository.adminPassword="${ADMIN_PWD}" \
           --set repository.image.repository="quay.io/alfresco/${ALFRESCO_REPO_IMAGE}" \
           --set repository.image.tag="${REPO_TAG_NAME}" \
           --set share.image.repository="quay.io/alfresco/${ALFRESCO_SHARE_IMAGE}" \

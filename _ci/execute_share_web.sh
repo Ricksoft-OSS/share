@@ -27,7 +27,7 @@ mvn install \
                -Dshare.port=443 \
                -Dshare.url="https://$HOST/share" \
                -Dadmin.user=admin \
-               -Dadmin.password=$ADMIN_PWD \
+               -Dadmin.password=$ALF_PWD \
                -Dbrowser.name=chrome \
                -Daims.enabled=false \
                -Dsuite-name=${XML_SUITE}& # send the long living command to background!
