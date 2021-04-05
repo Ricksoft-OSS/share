@@ -28,7 +28,7 @@ branches:
   only:
     - master
     - develop
-    - /^SP\/.+$/
+    - /^release\/.+$/
     - /.*\/APPS-.*$/
 
 env:
@@ -70,6 +70,7 @@ jobs:
   include:
     - name: "Build and Test"
       stage: build
+      if: commit_message !~ /\[trigger company release|release|STOP MASTER\]/
       before_install: bash _ci/init.sh
       script: bash _ci/build.sh
 
@@ -83,7 +84,7 @@ jobs:
 #    - name: "Source Clear Scan (SCA)"
 #      stage: build
 #      # only on SP branches or master and if it is not a PR
-#     if: fork = false AND (branch = develop OR branch =~ /support\/SP\/.*/ OR branch =~ /.*\/APPS-.*$/) AND type != pull_request
+#      if: fork = false AND (branch = develop OR branch =~ /support\/SP\/.*/ OR branch =~ /.*\/APPS-.*$/) AND type != pull_request
 #      before_install: bash _ci/init.sh
 #      # Run Veracode
 #      install: skip
@@ -91,6 +92,7 @@ jobs:
 
     - name: "Deploy on K8s"
       stage: deploy
+      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
       install: skip
       script: bash _ci/deploy_k8s.sh
 
@@ -98,7 +100,7 @@ jobs:
       name: "User and Authentication Tests"
       stage: tests
       jdk: openjdk11
-      if: fork=false AND commit_message !~ /\[trigger company release|skip tests\]/
+      if: fork=false AND commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/
       before_install: bash _ci/init.sh
       install: skip
       script:
@@ -158,17 +160,26 @@ jobs:
 
     - name: "Delete environment"
       stage: tearDown
+      if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/ AND branch != master
       install: skip
-      script: bash _ci/delete-env.sh
+      script: bash _ci/delete-env.sh "false"
 
-    - name: "Release"
-      stage: release
-      if: fork=false AND commit_message =~ /\[release\]/ AND branch =~ /(master|develop|SP\/.+|HF\/.+)$/
-      before_install: bash _ci/init_tag.sh
-      script: travis_wait 30 _ci/maven_release.sh
+    - name: "Delete environment MASTER"
+      stage: tearDown
+      if: branch = master
+      install: skip
+      script: bash _ci/delete-env.sh "true"
 
-    - name: "Company Release"
-      stage: company_release
-      if: fork=false AND commit_message =~ /\[trigger company release\]/ AND branch =~ /(master|SP\/.+|HF\/.+)$/
-      before_install: bash _ci/init_tag.sh
-      script: travis_wait 30 _ci/company-release.sh
+#    - name: "Release"
+#      stage: release
+#      if: fork=false AND branch =~ /(master|develop|release\/.+)$/
+#      before_install: bash _ci/init_tag.sh
+#      script: travis_wait 30 _ci/maven_release.sh
+
+#    - name: "Company Release"
+#      stage: company_release
+#      if: fork=false AND commit_message =~ /\[trigger company release\]/ AND branch =~ /(master|SP\/.+|HF\/.+)$/
+#      before_install:
+#        - bash _ci/init.sh
+#        - bash _ci/init_tag.sh
+#      script: travis_wait 30 _ci/company-release.sh
