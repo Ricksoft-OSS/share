@@ -158,6 +158,11 @@ jobs:
       install: skip
       script: bash _ci/upload_test_artifacts.sh
 
+    - name: "Push to Nexus"
+      stage: release
+      install: skip
+      script: travis_wait 40 bash bash _ci/maven_release.sh
+
     - name: "Delete environment"
       stage: tearDown
       if: commit_message !~ /\[trigger company release|skip tests|STOP MASTER\]/ AND branch != master
