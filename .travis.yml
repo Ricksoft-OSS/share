@@ -161,7 +161,7 @@ jobs:
     - name: "Push to Nexus"
       stage: release
       install: skip
-      script: travis_wait 40 bash bash _ci/maven_release.sh
+      script: travis_wait 40 bash _ci/maven_release.sh
 
     - name: "Delete environment"
       stage: tearDown
